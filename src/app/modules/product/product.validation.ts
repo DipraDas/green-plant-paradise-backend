@@ -27,7 +27,7 @@ const updateProductValidationSchema = z.object({
     quantity: z.number().min(1).optional(),
     description: z.string().optional(),
     briefDescription: z.string().optional(),
-    rating: z.number().min(1).max(5),
+    rating: z.number().min(1).max(5).optional(),
     categories: z
       .array(
         z.string().refine((val) => Types.ObjectId.isValid(val), {

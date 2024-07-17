@@ -49,21 +49,20 @@ const ProductSchema = new Schema<TProduct>({
   ],
   featured: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 });
 
 ProductSchema.path("categories").validate(function (value) {
   return value.length > 0;
 }, "Product must have at least one category.");
 
-
 ProductSchema.pre("findOneAndUpdate", async function (next) {
   const query = this.getQuery();
-  const isProductExist = await Category.findOne(query);
+  const isProductExist = await Product.findOne(query);
 
   if (!isProductExist) {
-    throw new AppError(httpStatus.NOT_FOUND, `This Product does not exist!`);
+    throw new AppError(httpStatus.NOT_FOUND, 'This Product does not exist!');
   }
 
   next();
@@ -72,21 +71,21 @@ ProductSchema.pre("findOneAndUpdate", async function (next) {
 ProductSchema.pre<TProduct>("save", async function (next) {
   const product = this;
 
-  const isProductExist = await Category.findOne({
+  const isProductExist = await Product.findOne({
     title: this.title,
   });
 
   if (isProductExist) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      `${this.title} product already exist!`
+      ` ${this.title} product already exist!`
     );
   }
   // Check if each category ObjectId exists in the Category collection
   for (const categoryId of product.categories) {
     const categoryExists = await Category.exists({ _id: categoryId });
     if (!categoryExists) {
-      throw new AppError(httpStatus.NOT_FOUND, `This Category does not exist`);
+      throw new AppError(httpStatus.NOT_FOUND, 'This Category does not exist');
     }
   }
 

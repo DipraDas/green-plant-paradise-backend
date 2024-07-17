@@ -15,7 +15,6 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
   )
     .search(ProductSearchableFields)
     .filter()
-    .sort()
     .paginate()
     .fields();
 
@@ -40,9 +39,15 @@ const updateProductIntoDB = async (id: string, payload: Partial<TProduct>) => {
   return result;
 };
 
+const deleteProductFromDB = async (id: string) => {
+  const result = await Product.findByIdAndDelete(id);
+  return result;
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductFromDB,
   getSingleProductFromDB,
   updateProductIntoDB,
+  deleteProductFromDB
 };

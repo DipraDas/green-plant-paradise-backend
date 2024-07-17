@@ -15,9 +15,9 @@ class QueryBuilder<T> {
       this.modelQuery = this.modelQuery.find({
         $or: searchableFields.map(
           (field) =>
-            ({
-              [field]: { $regex: searchTerm, $options: "i" },
-            } as FilterQuery<T>)
+          ({
+            [field]: { $regex: searchTerm, $options: "i" },
+          } as FilterQuery<T>)
         ),
       });
     }
@@ -48,9 +48,9 @@ class QueryBuilder<T> {
 
   paginate() {
     const page = Number(this?.query?.page) || 1;
-    const limit = Number(this?.query?.limit) || 10;
+    const limit = Number(this?.query?.limit) || null;
     const skip = (page - 1) * limit;
-
+    console.log('ski', skip);
     this.modelQuery = this.modelQuery.skip(skip).limit(limit);
 
     return this;
