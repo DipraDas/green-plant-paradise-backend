@@ -14,16 +14,20 @@ app.use(cors());
 // application route
 app.use("/api/v1", router);
 
-const test = (req: Request, res: Response) => {
-  Promise.reject();
-  // res.send("hello world");
-};
+// const test = (req: Request, res: Response) => {
+//   Promise.reject();
+//   res.send("hello world");
+// };
 
-app.use("/", test);
-// not found
-app.use(notFound);
+app.get("/", (req: Request, res: Response) => {
+  res.send("Green Planet Paradise Project Running");
+});
+
+// app.use("/", test);
 
 // error handler middleware
 app.use(globalErrorHandler);
+// not found
+app.use(notFound);
 
 export default app;
